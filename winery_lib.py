@@ -12,7 +12,7 @@ def generate_year_form(number):
         return 'лет'
 
 
-def todays_year():
+def get_todays_year():
     current_year = datetime.now().year
     winery_founded_year = 1920
     winery_age = current_year - winery_founded_year

@@ -1,6 +1,6 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from winery_lib import todays_year, generate_year_form
+from winery_lib import get_todays_year, generate_year_form
 import pandas as pd
 import argparse
 
@@ -11,7 +11,7 @@ def main(file_path=None):
     else:
         excel_data_df = pd.read_excel(io='wine.xlsx', na_values=' ', keep_default_na=False)
 
-    full_date = todays_year()
+    full_date = get_todays_year()
 
     env = Environment(
             loader=FileSystemLoader('.'),
