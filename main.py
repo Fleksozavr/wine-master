@@ -2,10 +2,14 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from winery_lib import todays_year, generate_year_form
 import pandas as pd
+import argparse
 
 
-def main():
-    excel_data_df = pd.read_excel(io='wine3.xlsx', na_values=' ', keep_default_na=False)
+def main(file_path=None):
+    if file_path:
+        excel_data_df = pd.read_excel(io=file_path, na_values=' ', keep_default_na=False)
+    else:
+        excel_data_df = pd.read_excel(io='wine.xlsx', na_values=' ', keep_default_na=False)
 
     full_date = todays_year()
 
@@ -31,6 +35,9 @@ def main():
     server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
     server.serve_forever()
 
-
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--file_path", help="Путь к файлу с данными")
+    args = parser.parse_args()
+    
+    main(args.file_path)
