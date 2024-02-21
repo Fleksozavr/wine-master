@@ -1,6 +1,6 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from winery_lib import get_todays_year, generate_year_form
+from winery_lib import get_todays_date, generate_year_form
 import pandas as pd
 import argparse
 
@@ -11,7 +11,7 @@ def main(file_path=None):
     else:
         excel_data_df = pd.read_excel(io='wine.xlsx', na_values=' ', keep_default_na=False)
 
-    full_date = get_todays_year()
+    full_date = get_todays_date()
 
     env = Environment(
             loader=FileSystemLoader('.'),
@@ -20,20 +20,20 @@ def main(file_path=None):
     template = env.get_template('template.html')
 
     wines = excel_data_df.to_dict(orient='records')
-    res = {}
+    grouped_wines = {}
 
     for wine in wines:
-        wine_list = [{'Категория': wine['Категория'], 'Название': wine['Название'], 'Сорт': wine['Сорт'], 'Цена': wine['Цена'], 'Картинка': wine['Картинка'], 'Акция': wine['Акция']}]
-        for x in wine_list:
-            res.setdefault(x['Категория'], []).append(x)
+        wine_data = {'Категория': wine['Категория'], 'Название': wine['Название'], 'Сорт': wine['Сорт'], 'Цена': wine['Цена'], 'Картинка': wine['Картинка'], 'Акция': wine['Акция']}
+        grouped_wines.setdefault(wine_data['Категория'], []).append(wine_data)
 
-    output = template.render(winery_age=full_date[0], year=full_date[1], wines=wines, full_date=full_date, res=res)
+    output = template.render(winery_age=full_date[0], year=full_date[1], wines=wines, full_date=full_date, grouped_wines=grouped_wines)
 
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(output)
 
     server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
     server.serve_forever()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
