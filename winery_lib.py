@@ -21,5 +21,4 @@ def get_todays_date():
     winery_founded_year = 1920
     winery_age = get_winery_age(winery_founded_year)
     year_form = generate_year_form(winery_age)
-    full_date = winery_age, year_form
-    return full_date
+    return winery_age, year_form

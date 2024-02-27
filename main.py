@@ -11,7 +11,7 @@ def main(file_path=None):
     else:
         excel_data_df = pd.read_excel(io='wine.xlsx', na_values=' ', keep_default_na=False)
 
-    full_date = get_todays_date()
+    winery_age, year_form = get_todays_date()
 
     env = Environment(
             loader=FileSystemLoader('.'),
