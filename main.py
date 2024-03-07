@@ -26,7 +26,7 @@ def main(file_path=None):
         wine_data = {'Категория': wine['Категория'], 'Название': wine['Название'], 'Сорт': wine['Сорт'], 'Цена': wine['Цена'], 'Картинка': wine['Картинка'], 'Акция': wine['Акция']}
         grouped_wines.setdefault(wine_data['Категория'], []).append(wine_data)
 
-    output = template.render(winery_age=full_date[0], year=full_date[1], wines=wines, full_date=full_date, grouped_wines=grouped_wines)
+    output = template.render(wines=wines,grouped_wines=grouped_wines, winery_age=winery_age, year_form=year_form)
 
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(output)
@@ -36,8 +36,11 @@ def main(file_path=None):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--file_path", help="Путь к файлу с данными")
+    parser = argparse.ArgumentParser(
+                    prog='Сайт винодельни',
+                    description='Скрипт генерирует index.html для сайта',
+                    epilog='--file_path')
+    parser.add_argument("–file_path", help="Путь к файлу с данными", default="template.html")
     args = parser.parse_args()
     
     main(args.file_path)
