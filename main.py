@@ -6,10 +6,17 @@ import argparse
 
 
 def main(file_path=None):
+    parser = argparse.ArgumentParser(
+                    prog='Сайт винодельни',
+                    description='Скрипт генерирует index.html для сайта',
+                    epilog='--file_path')
+    parser.add_argument("--file_path", help="Путь к файлу с данными", default="wine.xlsx")
+    args = parser.parse_args()
+
     if file_path:
         excel_data_df = pd.read_excel(io=file_path, na_values=' ', keep_default_na=False)
     else:
-        excel_data_df = pd.read_excel(io='wine.xlsx', na_values=' ', keep_default_na=False)
+        excel_data_df = pd.read_excel(io=args.file_path, na_values=' ', keep_default_na=False)
 
     winery_age, year_form = get_todays_date()
 
@@ -36,11 +43,4 @@ def main(file_path=None):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-                    prog='Сайт винодельни',
-                    description='Скрипт генерирует index.html для сайта',
-                    epilog='--file_path')
-    parser.add_argument("–file_path", help="Путь к файлу с данными", default="template.html")
-    args = parser.parse_args()
-    
-    main(args.file_path)
+    main()
