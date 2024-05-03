@@ -18,7 +18,8 @@ def main(file_path=None):
     else:
         excel_data_df = pd.read_excel(io=args.file_path, na_values=' ', keep_default_na=False)
 
-    winery_age, year_form = get_todays_date()
+    winery_age = get_winery_age(1920)
+    year_form = generate_year_form(winery_age)
 
     env = Environment(
             loader=FileSystemLoader('.'),
@@ -30,8 +31,8 @@ def main(file_path=None):
     grouped_wines = {}
 
     for wine in wines:
-        wine_data = {'Категория': wine['Категория'], 'Название': wine['Название'], 'Сорт': wine['Сорт'], 'Цена': wine['Цена'], 'Картинка': wine['Картинка'], 'Акция': wine['Акция']}
-        grouped_wines.setdefault(wine_data['Категория'], []).append(wine_data)
+        wine_item = {'Категория': wine['Категория'], 'Название': wine['Название'], 'Сорт': wine['Сорт'], 'Цена': wine['Цена'], 'Картинка': wine['Картинка'], 'Акция': wine['Акция']}
+        grouped_wines.setdefault(wine_item['Категория'], []).append(wine_item)
 
     output = template.render(wines=wines,grouped_wines=grouped_wines, winery_age=winery_age, year_form=year_form)
 
