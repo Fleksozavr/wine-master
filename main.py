@@ -5,7 +5,7 @@ import pandas as pd
 import argparse
 
 
-def main(file_path=None):
+def main():
     parser = argparse.ArgumentParser(
                     prog='Сайт винодельни',
                     description='Скрипт генерирует index.html для сайта',
@@ -13,10 +13,7 @@ def main(file_path=None):
     parser.add_argument("--file_path", help="Путь к файлу с данными", default="wine.xlsx")
     args = parser.parse_args()
 
-    if file_path:
-        excel_data_df = pd.read_excel(io=file_path, na_values=' ', keep_default_na=False)
-    else:
-        excel_data_df = pd.read_excel(io=args.file_path, na_values=' ', keep_default_na=False)
+    excel_data_df = pd.read_excel(io=file_path, na_values=' ', keep_default_na=False)
 
     winery_age = get_winery_age(1920)
     year_form = generate_year_form(winery_age)
