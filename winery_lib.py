@@ -15,10 +15,3 @@ def generate_year_form(number):
 def get_winery_age(founded_year):
     current_year = datetime.now().year
     return current_year - founded_year
-
-
-def get_todays_date():
-    winery_founded_year = 1920
-    winery_age = get_winery_age(winery_founded_year)
-    year_form = generate_year_form(winery_age)
-    return winery_age, year_form
