@@ -24,14 +24,13 @@ def main():
         )
     template = env.get_template('template.html')
 
-    wines = excel_data_df.to_dict(orient='records')
     grouped_wines = {}
 
-    for wine in wines:
+    for _, wine in excel_data_df.iterrows():
         wine_item = {'Категория': wine['Категория'], 'Название': wine['Название'], 'Сорт': wine['Сорт'], 'Цена': wine['Цена'], 'Картинка': wine['Картинка'], 'Акция': wine['Акция']}
         grouped_wines.setdefault(wine_item['Категория'], []).append(wine_item)
 
-    output = template.render(wines=grouped_wines, winery_age=winery_age, year_form=year_form, grouped_wines=grouped_wines)
+    output = template.render(grouped_wines=grouped_wines, winery_age=winery_age, year_form=year_form)
 
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(output)
